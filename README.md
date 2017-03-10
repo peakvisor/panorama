@@ -9,7 +9,7 @@ This tool was developed as part of the [PeakVisor](http://peakvisor.com "PeakVis
 
 panorama -i er_panorama.jpg -o cube_faces.jpg -r 4096
 
-# Hot to build the panorama converter
+# How to build the panorama converter
 
 Clone the repository with:
 git clone
@@ -25,3 +25,7 @@ Make the tool
 make
 
 That's it
+
+# How to use panorama converter as a web service
+
+We're running this panorama converter on some of our servers and if you are interested in using it as a web service then please let me know: denis@denivip.ru
