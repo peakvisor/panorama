@@ -2,9 +2,59 @@
 #include <math.h> 
 #include <algorithm>
 #include <string> 
+#include <unistd.h>
 
-#include "CImg.h"
+#include "CImg/CImg.h"
 using namespace cimg_library;
+
+int iflag, oflag, hflag, rflag;
+char *ivalue, *ovalue;
+int rvalue=4096;
+
+/**
+**	Parse input parameters 
+**/
+int parseParameters(int argc, char *argv[]) {
+	iflag = oflag = hflag = rflag = 0;
+	ivalue = ovalue = NULL;
+	int index;
+	int c;
+	opterr = 0;
+
+	while ((c = getopt (argc, argv, "i:o:r:")) != -1)
+		switch (c) {
+			case 'i':
+				// input file
+				iflag = 1;
+				ivalue = optarg;
+			break;
+			case 'o':
+				oflag = 1;
+				ovalue = optarg;
+			break;
+			case 'r':
+				rflag = 1;
+				rvalue = std::stoi(optarg);
+			break;
+			case '?':
+				if (optopt == 'i' || optopt == 'o' || optopt == 'r')
+					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+				else if (isprint (optopt))
+					fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+				else
+					fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+		    	return 1;
+			default:
+				abort ();
+		}
+
+	if (iflag==0 || oflag == 0) {
+		std::cout << "No inputs or outputs specified: "<< iflag << "/" << oflag <<"\n";
+		abort ();
+		return 1;
+	}
+	return 0;
+}
 
 struct Vec3fa { double x, y, z; };
 struct Vec3uc { unsigned char x, y, z; };
@@ -35,19 +85,22 @@ Vec3fa outImgToXYZ(int i, int j, int face, int edge) {
     return res;
 }
 
+/**	
+**	Clip a value into boundaries
+**/
 template <typename T>
 T clip(const T& n, const T& lower, const T& upper) {
   return std::max(lower, std::min(n, upper));
 }
 
 /** 
-**	convert using an inverse transformation
+**	Convert panorama using an inverse pixel transformation
 **/
 void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
     int _sw = imgIn.width();
     int _sh = imgIn.height();
-    int _dw = 4096*4;
-    int edge = 4096; // the length of each edge in pixels
+    int _dw = rvalue*4;
+    int edge = rvalue; // the length of each edge in pixels
 
     for (int i=0; i<_dw; ++i) {
 		int face = int(i/edge); // 0 - back, 1 - left 2 - front, 3 - right
@@ -88,23 +141,29 @@ void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
 
 int main (int argc, char *argv[]) {
 	std::cout << "PeakVisor panorama translator...\n";
-	std::cout << "  load input panorama: " << argv[1] << "\n";
+
+	parseParameters(argc, argv);
+
+	std::cout << "  convert equirectangular panorama: [" << ivalue << "] into cube faces: ["<< ovalue << "] of " << rvalue <<" pixels in dimension\n";
 
 	// Input image
-	CImg<unsigned char> imgIn(argv[1]);
+	CImg<unsigned char> imgIn(ivalue);
 
 	// Output images
 	CImg<unsigned char>* imgOut[4];
 	for (int i=0; i<4; ++i){
-		imgOut[i] = new CImg<unsigned char>(4096, 4096, 1, 4, 255);
+		imgOut[i] = new CImg<unsigned char>(rvalue, rvalue, 1, 4, 255);
 	}
 	
 	convertBack(imgIn, imgOut);
 
+	// Look around cube faces
 	for (int i=0; i<4; ++i){
-		std::string fname = "./face" + std::to_string(i) + ".jpg";
+		std::string fname = std::string(ovalue) + "_" + std::to_string(i) + ".jpg";
 		imgOut[i]->save_jpeg( fname.c_str(), 85);
 	}
+	// Top and bottom faces
+	
 
 	//imgOut.save_jpeg( "./result.jpg", 85);
 }
