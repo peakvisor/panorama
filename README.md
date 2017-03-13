@@ -32,10 +32,9 @@ Initialize dependencies:
 > git submodule init
 > git submovulde update
 
-Check other dependencies (JPG, PNG, X11)
-Update paths in the makefile if needed
+Check other dependencies (JPG, PNG, X11, Intel TBB). Update paths in the makefile if needed.
 
-Make the tool
+Make the panorama tool
 > make
 
 That's it!
