@@ -1,6 +1,6 @@
 # Photo Panorama Converter
 
-This application converts equirectangular panorama image into 6 cube faces. This tool might be very handy when you need to prepare a cube panorama for most of web panorama viewers. 
+This application converts an equirectangular panorama image into 6 cube faces images. The tool might be very handy when you need to prepare a cube faces panorama for some of web panorama viewers (a.e. Panellum).
 
 This tool was developed as part of the [PeakVisor](http://peakvisor.com "PeakVisor") service. Please check it out, it is fantastic! Here is the webpage which renders [mountain panoramas](http://peakvisor.com/panorama.html "Mountain Panoramas")
 
