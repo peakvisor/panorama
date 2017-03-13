@@ -8,6 +8,14 @@
 #include "CImg/CImg.h"
 using namespace cimg_library;
 
+//#include <xmmintrin.h>
+//#include <pmmintrin.h>
+
+// Multithreading
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
+using namespace tbb;
+
 // Input parameters
 int iflag, oflag, hflag, rflag;
 char *ivalue, *ovalue;
@@ -59,7 +67,7 @@ int parseParameters(int argc, char *argv[]) {
 
 struct Vec3fa { double x, y, z; };
 struct Vec3uc { unsigned char x, y, z; };
-struct Range {int start, end; };
+struct PixelRange {int start, end; };
 
 /** get x,y,z coords from out image pixels coords
 **	i,j are pixel coords
@@ -123,7 +131,33 @@ void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
 	int face = 0;
 
 	// Look around cube faces
-    for (int i=0; i<_dw; ++i) {
+	tbb::parallel_for(blocked_range<size_t>(0, _dw, 1), [&](const blocked_range<size_t>& range) {
+		for (size_t i=range.begin(); i<range.end(); ++i) {
+			face = int(i/edge); // 0 - back, 1 - left 2 - front, 3 - right
+			PixelRange rng = {edge, 2*edge};
+
+			if (i>=2*edge && i<3*edge) {
+				rng = {0, 3*edge};
+			}
+				
+			for (int j=rng.start; j<rng.end; ++j) {
+				if (j<edge) {
+					face = 4;
+				} else if (j>2*edge) {
+					face = 5;
+				} else {
+					face = int(i/edge);
+				}
+
+				Vec3fa xyz = outImgToXYZ(i, j, face, edge);
+				Vec3uc clr = interpolateXYZtoColor(xyz, imgIn);
+				const unsigned char color[] = { clr.x, clr.y, clr.z, 255 };
+				imgOut[face]->draw_point(i%edge, j%edge, 0, color);
+			}
+		}
+			
+	});
+    /*for (int i=0; i<_dw; ++i) {
 		face = int(i/edge); // 0 - back, 1 - left 2 - front, 3 - right
 		Range rng = {edge, 2*edge};
 
@@ -146,7 +180,7 @@ void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
 			imgOut[face]->draw_point(i%edge, j%edge, 0, color);
 		}
 		
-	}
+	}*/
 }
 
 Vec3fa outImgToXYZ(int i, int j, int face, int edge) {

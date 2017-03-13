@@ -39,7 +39,7 @@ LFLAGS = -L/usr/X11/lib -L/usr/local/Cellar/jpeg/8d/lib -L/opt/local/lib
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-LIBS = -lpthread -lX11 -lpng -ljpeg -llog4cplus
+LIBS = -lpthread -lX11 -lpng -ljpeg -ltbb
 
 #
 # The following part of the makefile is generic; it can be used to 

@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+panorama
+
+# Test images
+*.jpg
