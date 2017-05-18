@@ -102,7 +102,7 @@ int main (int argc, char *argv[]) {
 	CImg<unsigned char> imgIn(ivalue);
 
 	// Create output images
-	CImg<unsigned char>* imgOut[4];
+	CImg<unsigned char>* imgOut[6];
 	for (int i=0; i<6; ++i){
 		imgOut[i] = new CImg<unsigned char>(rvalue, rvalue, 1, 4, 255);
 	}
