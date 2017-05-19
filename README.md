@@ -23,6 +23,13 @@ For a detailed description of the algorithm (and geometry) behind the tool pleas
 
 Obviously, it decreases the panorama's quality and you'd better avoid this transformation.
 
+# Requirements
+
+The program requires the Intel [Threading Building Blocks](https://www.threadingbuildingblocks.org/) (TBB), [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) libaries.
+
+On ubuntu these can be installed with 
+> sudo apt-get install libtbb-dev libpng-dev libjpeg-dev
+
 # How to build the panorama converter
 
 Clone the repository with:
