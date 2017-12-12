@@ -11,7 +11,7 @@ Launch the panorama utility with following parameters:
 -o - output cube faces names
 -r - edge length of a cube face (optional)
 
-> panorama -i ./samples/equirectangular_panorama.jpg.jpg -o cube_faces -r 4096
+> panorama -i ./samples/equirectangular_panorama.jpg.jpg -o ./samples/cube_faces -r 4096
 
 For a test you might take the panoramic photo from the samples directory. It was taken with a Panono 360-degrees camera (dimensions 16384x8192) on the way to the Monte Bregagnino's summit (Lake Como, Italy). Depending on your CPU performance it might take from several seconds to a minute.
 
