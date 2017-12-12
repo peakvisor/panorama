@@ -1,6 +1,6 @@
 # Photo Panorama Converter
 
-This application converts equirectangular panorama image into 6 cube faces. This tool might be very handy when you need to prepare a cube panorama for most of web panorama viewers. 
+This application converts an equirectangular panorama image into 6 cube faces images. The tool might be very handy when you need to prepare a cube faces panorama for some of web panorama viewers (a.e. Panellum).
 
 This tool was developed as part of the [PeakVisor](http://peakvisor.com "PeakVisor") service. Please check it out, it is fantastic! Here is the webpage which renders [mountain panoramas](http://peakvisor.com/panorama.html "Mountain Panoramas")
 
@@ -11,7 +11,7 @@ Launch the panorama utility with following parameters:
 -o - output cube faces names
 -r - edge length of a cube face (optional)
 
-> panorama -i ./samples/equirectangular_panorama.jpg.jpg -o ./samples/cube_faces -r 4096
+> panorama -i ./samples/equirectangular_panorama.jpg -o cube_faces -r 4096
 
 For a test you might take the panoramic photo from the samples directory. It was taken with a Panono 360-degrees camera (dimensions 16384x8192) on the way to the Monte Bregagnino's summit (Lake Como, Italy). Depending on your CPU performance it might take from several seconds to a minute.
 
@@ -23,6 +23,13 @@ For a detailed description of the algorithm (and geometry) behind the tool pleas
 
 Obviously, it decreases the panorama's quality and you'd better avoid this transformation.
 
+# Requirements
+
+The program requires the Intel [Threading Building Blocks](https://www.threadingbuildingblocks.org/) (TBB), [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) libaries.
+
+On ubuntu these can be installed with 
+> sudo apt-get install libtbb-dev libpng-dev libjpeg-dev
+
 # How to build the panorama converter
 
 Clone the repository with:
@@ -30,7 +37,8 @@ Clone the repository with:
 
 Initialize dependencies:
 > git submodule init
-> git submovulde update
+
+> git submodule update
 
 Check other dependencies (JPG, PNG, X11, Intel TBB). Update paths in the makefile if needed.
 
