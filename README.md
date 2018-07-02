@@ -30,6 +30,14 @@ The program requires the Intel [Threading Building Blocks](https://www.threading
 On ubuntu these can be installed with 
 > sudo apt-get install libtbb-dev libpng-dev libjpeg-dev
 
+If you see the following error message:
+> sh: 1: convert: not found
+> sh: 1: gm: not found
+
+Then the solution is:
+> yum install imagemagick
+> yum install graphicsmagick (optional)
+
 # How to build the panorama converter
 
 Clone the repository with:
