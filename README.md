@@ -11,7 +11,9 @@ Launch the panorama utility with following parameters:
 -o - output cube faces names
 -r - edge length of a cube face (optional)
 
-> panorama -i ./samples/equirectangular_panorama.jpg -o cube_faces -r 4096
+```
+panorama -i ./samples/equirectangular_panorama.jpg -o cube_faces -r 4096
+```
 
 For a test you might take the panoramic photo from the samples directory. It was taken with a Panono 360-degrees camera (dimensions 16384x8192) on the way to the Monte Bregagnino's summit (Lake Como, Italy). Depending on your CPU performance it might take from several seconds to a minute.
 
@@ -28,30 +30,40 @@ Obviously, it decreases the panorama's quality and you'd better avoid this trans
 The program requires the Intel [Threading Building Blocks](https://www.threadingbuildingblocks.org/) (TBB), [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) libaries.
 
 On ubuntu these can be installed with 
-> sudo apt-get install libtbb-dev libpng-dev libjpeg-dev
+```
+sudo apt-get install libtbb-dev libpng-dev libjpeg-dev
+```
 
 If you see the following error message:
-> sh: 1: convert: not found
-> sh: 1: gm: not found
-
+```
+sh: 1: convert: not found
+sh: 1: gm: not found
+```
 Then the solution is:
-> yum install imagemagick
-> yum install graphicsmagick (optional)
+```
+sudo apt-get install imagemagick
+sudo apt-get install graphicsmagick (optional)
+````
 
 # How to build the panorama converter
 
 Clone the repository with:
-> git clone
+```
+git clone
+```
 
 Initialize dependencies:
-> git submodule init
-
-> git submodule update
+```
+git submodule init
+git submodule update
+```
 
 Check other dependencies (JPG, PNG, X11, Intel TBB). Update paths in the makefile if needed.
 
 Make the panorama tool
-> make
+```
+make
+```
 
 That's it!
 
