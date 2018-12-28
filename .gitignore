@@ -1,3 +1,5 @@
+photo 
+
 # Compiled Object files
 *.slo
 *.lo
@@ -31,3 +33,4 @@ panorama
 
 # Test images
 *.jpg
+*.png
