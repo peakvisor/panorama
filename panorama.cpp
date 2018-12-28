@@ -149,10 +149,10 @@ void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
     tbb::parallel_for(blocked_range<size_t>(0, _dw, 1),
                               [&](const blocked_range<size_t>& range) {
         for (size_t k=range.begin(); k<range.end(); ++k) {
-            int face = int(k/edge); // 0 - back, 1 - left 2 - front, 3 - right, 4 - top, 5 - bottom
-            int i = int(k%edge);
+            int face = int(k / edge); // 0 - back, 1 - left 2 - front, 3 - right, 4 - top, 5 - bottom
+            int i = int(k % edge);
 
-			for (int j=0; j<edge; ++j) {
+	    for (int j=0; j<edge; ++j) {
                 Vec3fa xyz = outImgToXYZ(i, j, face, edge);
                 Vec3uc clr = interpolateXYZtoColor(xyz, imgIn);
                 const unsigned char color[] = { clr.x, clr.y, clr.z, 255 };
@@ -162,7 +162,7 @@ void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
     });
 }
 
-// Given i,j pixel coordinates on a given face in range [0,edge), 
+// Given i,j pixel coordinates on a given face in range (0,edge), 
 // find the corresponding x,y,z coords in range (-1.0,1.0)
 Vec3fa outImgToXYZ(int i, int j, int face, int edge) {
     float a = (2.0f*i)/edge - 1.0f;
