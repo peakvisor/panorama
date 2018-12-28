@@ -147,23 +147,21 @@ void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
     int face = 0;
     
     // Look around cube faces
-//    for (int i = 0; i < _dw; ++i) {
     tbb::parallel_for(blocked_range<size_t>(0, _dw, 1),
                               [&](const blocked_range<size_t>& range) {
-//        for (size_t i=/*range.begin()*/0; i</*range.end()*/_dw; ++i) {
-                                  int face = 0;
-                    for (size_t i=range.begin(); i<range.end(); ++i) {
+        int face = 0;
+        for (size_t i=range.begin(); i<range.end(); ++i) {
             face = int(i/edge); // 0 - back, 1 - left 2 - front, 3 - right
             PixelRange rng = {edge, 2*edge};
             
-            if (i>=2*edge && i<3*edge) {
+            if (i>=2*edge && i<3*edge) { // top and bottom faces above and below front face
                 rng = {0, 3*edge};
             }
             
             for (int j=rng.start; j<rng.end; ++j) {
-                if (j<edge) {
+                if (j<edge) {  // top face
                     face = 4;
-                } else if (j>2*edge) {
+                } else if (j>=2*edge) {  // bottom face
                     face = 5;
                 } else {
                     face = int(i/edge);
@@ -174,34 +172,8 @@ void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
                 const unsigned char color[] = { clr.x, clr.y, clr.z, 255 };
                 imgOut[face]->draw_point(i%edge, j%edge, 0, color);
             }
-//                    }
-//                              }();
-                    }
-                              });
-    /*for (int i=0; i<_dw; ++i) {
-     face = int(i/edge); // 0 - back, 1 - left 2 - front, 3 - right
-     Range rng = {edge, 2*edge};
-     
-     if (i>=2*edge && i<3*edge) {
-     rng = {0, 3*edge};
-     }
-     
-     for (int j=rng.start; j<rng.end; ++j) {
-     if (j<edge) {
-     face = 4;
-     } else if (j>2*edge) {
-     face = 5;
-     } else {
-     face = int(i/edge);
-     }
-     
-     Vec3fa xyz = outImgToXYZ(i, j, face, edge);
-     Vec3uc clr = interpolateXYZtoColor(xyz, imgIn);
-     const unsigned char color[] = { clr.x, clr.y, clr.z, 255 };
-     imgOut[face]->draw_point(i%edge, j%edge, 0, color);
-     }
-     
-     }*/
+       }
+    });
 }
 
 Vec3fa outImgToXYZ(int i, int j, int face, int edge) {
