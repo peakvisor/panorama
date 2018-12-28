@@ -142,56 +142,47 @@ int main (int argc, char *argv[]) {
  **	Convert panorama using an inverse pixel transformation
  **/
 void convertBack(CImg<unsigned char>& imgIn, CImg<unsigned char> **imgOut){
-    int _dw = rvalue*4;
+    int _dw = rvalue*6;
     int edge = rvalue; // the length of each edge in pixels
-    int face = 0;
-    
+
     // Look around cube faces
     tbb::parallel_for(blocked_range<size_t>(0, _dw, 1),
                               [&](const blocked_range<size_t>& range) {
-        int face = 0;
-        for (size_t i=range.begin(); i<range.end(); ++i) {
-            face = int(i/edge); // 0 - back, 1 - left 2 - front, 3 - right
-            PixelRange rng = {edge, 2*edge};
-            
-            if (i>=2*edge && i<3*edge) { // top and bottom faces above and below front face
-                rng = {0, 3*edge};
-            }
-            
-            for (int j=rng.start; j<rng.end; ++j) {
-                if (j<edge) {  // top face
-                    face = 4;
-                } else if (j>=2*edge) {  // bottom face
-                    face = 5;
-                } else {
-                    face = int(i/edge);
-                }
-                
+        for (size_t k=range.begin(); k<range.end(); ++k) {
+            int face = int(k / edge); // 0 - back, 1 - left 2 - front, 3 - right, 4 - top, 5 - bottom
+            int i = int(k % edge);
+
+	    for (int j=0; j<edge; ++j) {
                 Vec3fa xyz = outImgToXYZ(i, j, face, edge);
                 Vec3uc clr = interpolateXYZtoColor(xyz, imgIn);
                 const unsigned char color[] = { clr.x, clr.y, clr.z, 255 };
-                imgOut[face]->draw_point(i%edge, j%edge, 0, color);
+                imgOut[face]->draw_point(i, j, 0, color);
             }
        }
     });
 }
 
+// Given i,j pixel coordinates on a given face in range (0,edge), 
+// find the corresponding x,y,z coords in range (-1.0,1.0)
 Vec3fa outImgToXYZ(int i, int j, int face, int edge) {
-    auto a = 2.0 * i / edge;
-    auto b = 2.0 * j / edge;
+    float a = (2.0f*i)/edge - 1.0f;
+    float b = (2.0f*j)/edge - 1.0f;
     Vec3fa res;
-    if (face == 0) { // back
-        res = {-1, 1 - a, 3 - b};
-    } else if (face == 1) { // left
-        res = {a - 3, -1, 3 - b};
-    } else if (face == 2) { // front
-        res = {1, a - 5, 3 - b};
-    } else if (face == 3) { // right
-        res = {7 - a, 1, 3 - b};
-    } else if (face == 4) { // top
-        res = {b - 1, a - 5, 1};
+    if (face==0) { // back
+        res = {-1.0f, -a, -b};
+    } else if (face==1) { // left
+        res = {a, -1.0f, -b};
+    } else if (face==2) { // front
+        res = {1.0f, a,  -b};
+    } else if (face==3) { // right
+        res = {-a, 1.0f, -b};
+    } else if (face==4) { // top
+        res = {b, a, 1.0f};
     } else if (face==5) { // bottom
-        res = {5 - b, a - 5, -1};
+        res = {-b, a, -1.0f};
+    }
+    else {
+        printf("face %d\n",face);    
     }
     return res;
 }
