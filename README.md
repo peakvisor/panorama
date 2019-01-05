@@ -27,11 +27,11 @@ Obviously, it decreases the panorama's quality and you'd better avoid this trans
 
 # Requirements
 
-The program requires the Intel [Threading Building Blocks](https://www.threadingbuildingblocks.org/) (TBB), [libpng](http://www.libpng.org/pub/png/libpng.html) and [libjpeg](http://libjpeg.sourceforge.net/) libaries.
+The program requires the Intel [Threading Building Blocks](https://www.threadingbuildingblocks.org/) (TBB), [libpng](http://www.libpng.org/pub/png/libpng.html), xorg-dev, and [libjpeg](http://libjpeg.sourceforge.net/) libaries.
 
 On ubuntu these can be installed with 
 ```
-sudo apt-get install libtbb-dev libpng-dev libjpeg-dev
+sudo apt-get install libtbb-dev libpng-dev libjpeg-dev xorg-dev
 ```
 
 If you see the following error message:
