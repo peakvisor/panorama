@@ -15,7 +15,7 @@ Launch the panorama utility with following parameters:
 panorama -i ./samples/equirectangular_panorama.jpg -o cube_faces -r 4096
 ```
 
-For a test you might take the panoramic photo from the samples directory. It was taken with a Panono 360-degrees camera (dimensions 16384x8192) on the way to the Monte Bregagnino's summit (Lake Como, Italy). Depending on your CPU performance it might take from several seconds to a minute.
+For a test you might take the panoramic photo from the samples directory. It was taken with a Panono 360-degrees camera (dimensions 16384x8192) on the way to the [Monte Bregagnino](https://peakvisor.com/peak/bregagnino.html)'s summit (Lake Como, Italy). Depending on your CPU performance it might take from several seconds to a minute.
 
 Here is a sample webGL panorama viewer based on threeJS (LINK)
 
