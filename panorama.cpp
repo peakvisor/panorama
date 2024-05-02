@@ -217,7 +217,6 @@ Vec3uc interpolateXYZtoColor(Vec3fa xyz, CImg<unsigned char>& imgIn) {
     auto u2 = safeIndex(ui + 1, _sw);
     auto v2 = safeIndex(vi + 1, _sh);       //# coords of pixel to top right
     double mu = uf - ui, nu = vf - vi;      //# fraction of way across pixel
-    mu = nu = 0;
     
     // Pixel values of four nearest corners
     auto read = [&](int x, int y) { return Vec3fa{Vec3uc{*imgIn.data(x, y, 0, 0), *imgIn.data(x, y, 0, 1), *imgIn.data(x, y, 0, 2)}}; };
