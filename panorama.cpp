@@ -5,6 +5,9 @@
 #include <unistd.h>
 
 // CImg library
+#define cimg_display 0
+#define cimg_use_jpeg
+#define cimg_use_png
 #include "CImg/CImg.h"
 using namespace cimg_library;
 
@@ -129,7 +132,6 @@ int main (int argc, char *argv[]) {
     for (int i=0; i<6; ++i){
         std::string fname = std::string(ovalue) + "_" + std::to_string(i) + ".jpg";//".jpg";
         imgOut[i]->save_jpeg( fname.c_str(), 85);
-//        imgOut[i]->save_png(fname.c_str());
     }
     
     std::cout << "  convertation finished successfully\n";

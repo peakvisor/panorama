@@ -27,23 +27,12 @@ Obviously, it decreases the panorama's quality and you'd better avoid this trans
 
 # Requirements
 
-The program requires the Intel [Threading Building Blocks](https://www.threadingbuildingblocks.org/) (TBB), [libpng](http://www.libpng.org/pub/png/libpng.html), xorg-dev, and [libjpeg](http://libjpeg.sourceforge.net/) libaries.
+The program requires the Intel [Threading Building Blocks](https://www.threadingbuildingblocks.org/) (TBB), [libpng](http://www.libpng.org/pub/png/libpng.html), and [libjpeg](http://libjpeg.sourceforge.net/) libraries.
 
 On ubuntu these can be installed with 
 ```
-sudo apt-get install libtbb-dev libpng-dev libjpeg-dev xorg-dev
+sudo apt-get install libtbb-dev libpng-dev libjpeg-dev
 ```
-
-If you see the following error message:
-```
-sh: 1: convert: not found
-sh: 1: gm: not found
-```
-Then the solution is:
-```
-sudo apt-get install imagemagick
-sudo apt-get install graphicsmagick (optional)
-````
 
 # How to build the panorama converter
 
@@ -58,7 +47,7 @@ git submodule init
 git submodule update
 ```
 
-Check other dependencies (JPG, PNG, X11, Intel TBB). Update paths in the makefile if needed.
+Check other dependencies (JPG, PNG, Intel TBB). Update paths in the makefile if needed.
 
 Make the panorama tool
 ```
